@@ -78,6 +78,6 @@ def example_usage():
             timeout=30,
             with_bounding_boxes=True,
             rotate_angle=90,
-            detect_tables=True
+            detect_tables=True,
         )
         print(text)
