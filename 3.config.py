@@ -92,3 +92,20 @@ def get_text(file: BufferedReader, config: TextExtractionConfig | None = None) -
     headers = config.to_headers()
     response = requests.post("dummy_url", data=file, headers=headers)
     return response.text
+
+
+def example_usage():
+    """
+    Example usage of our config class implementation
+    """
+    with open("example_file.pdf", "rb") as file:
+        config = TextExtractionConfig(
+            as_plain_text=True,
+            with_ocr=True,
+            timeout=30,
+            with_bounding_boxes=True,
+            inline_ocr=True,
+            ocr_with_text=True,
+        )
+        text = get_text(file, config)
+        print(text)

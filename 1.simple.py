@@ -25,3 +25,12 @@ def get_text(
 
     response = requests.post("dummy_url", data=file, headers=headers)
     return response.text
+
+
+def example_usage():
+    """
+    Example usage of our simple function implementation
+    """
+    with open("example_file.txt", "rb") as file:
+        text = get_text(file=file, as_plain_text=True, with_ocr=True)
+        print(text)

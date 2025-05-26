@@ -71,3 +71,20 @@ def get_text(
 
     response = requests.post("dummy_url", data=file, headers=headers)
     return response.text
+
+
+def example_usage():
+    # Example usage of our extended function implementation
+    with open("example.pdf", "rb") as file:
+        text = get_text(
+            file=file,
+            as_plain_text=True,
+            with_ocr=True,
+            timeout=30,
+            with_bounding_boxes=True,
+            inline_ocr=True,
+            ocr_with_text=True,
+            rotate_angle=90,
+            detect_tables=True
+        )
+        print(text)
