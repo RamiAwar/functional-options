@@ -56,6 +56,7 @@ class TextExtractionConfig(BaseModel):
         if self.with_ocr:
             headers["with_ocr"] = True
 
+            # Ignore inline_ocr if with_ocr is False
             if self.inline_ocr:
                 headers["inline_ocr"] = True
 

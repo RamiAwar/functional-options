@@ -11,7 +11,6 @@ def get_text(
         timeout: int | None = None,
         with_bounding_boxes: bool = False,
         inline_ocr: bool = False,
-        ocr_with_text: bool = False,
         rotate_angle: int = 0,  # 0, 90, 180, or 270
         detect_tables: bool = False,
 ) -> str:
@@ -25,7 +24,6 @@ def get_text(
     timeout -- The timeout for the OCR process in seconds. If None, no timeout is set.
     with_bounding_boxes -- If True, return the text with bounding boxes. If False, return the text without bounding boxes.
     inline_ocr -- If True, use inline OCR to get text from the file. If False, do not use inline OCR.
-    ocr_with_text -- If True, use OCR with text. If False, do not use OCR with text.
     rotate_angle -- The angle to rotate the image before processing. Must be 0, 90, 180, or 270.
     detect_tables -- If True, detect tables in the file. If False, do not detect tables.
     """
@@ -54,16 +52,15 @@ def get_text(
     if with_bounding_boxes:
         headers["with_bounding_boxes"] = True
 
-    if ocr_with_text:
-        headers["ocr_with_text"] = True
-
     if as_plain_text:
         headers["as_plain_text"] = True
 
     if not with_ocr:
         headers["SkipOCR"] = "true"
 
-    if inline_ocr:
+    # Sub-options: Inline OCR
+    # Ignore inline_ocr if with_ocr is False
+    if with_ocr and inline_ocr:
         headers["inline_ocr"] = "true"
 
     if as_plain_text:
@@ -80,10 +77,9 @@ def example_usage():
             file=file,
             as_plain_text=True,
             with_ocr=True,
+            inline_ocr=True,
             timeout=30,
             with_bounding_boxes=True,
-            inline_ocr=True,
-            ocr_with_text=True,
             rotate_angle=90,
             detect_tables=True
         )
