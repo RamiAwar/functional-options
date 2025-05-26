@@ -56,18 +56,13 @@ class TextExtractionConfig(BaseModel):
         if self.with_ocr:
             headers["with_ocr"] = True
 
-            # Ignore inline_ocr if with_ocr is False
+            # Sub-options: ignore if with_ocr is False
+            if self.with_bounding_boxes:
+                headers["with_bounding_boxes"] = True
             if self.inline_ocr:
                 headers["inline_ocr"] = True
-
-        if self.detect_tables:
-            headers["detect_tables"] = True
-
-        if self.with_bounding_boxes:
-            headers["with_bounding_boxes"] = True
-
-        if self.ocr_with_text:
-            headers["ocr_with_text"] = True
+            if self.detect_tables:
+                headers["detect_tables"] = True
 
         if self.as_plain_text:
             headers["as_plain_text"] = True
@@ -106,7 +101,6 @@ def example_usage():
             timeout=30,
             with_bounding_boxes=True,
             inline_ocr=True,
-            ocr_with_text=True,
         )
         text = get_text(file, config)
         print(text)

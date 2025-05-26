@@ -9,10 +9,10 @@ Option = Callable[[dict], dict]
 
 class Options:
     @staticmethod
-    def WithBoundingBoxes() -> Option:
-        """Enable bounding boxes in the output."""
+    def AsPlainText() -> Option:
+        """Output text as plain text format."""
         def apply(opt: dict) -> dict:
-            opt["with_bounding_boxes"] = True
+            opt["as_plain_text"] = True
             return opt
 
         return apply
@@ -47,40 +47,23 @@ class Options:
         return apply
 
     @staticmethod
-    def WithTableDetection() -> Option:
-        """Enable table detection in the document."""
-        def apply(opt: dict) -> dict:
-            opt["detect_tables"] = True
-            return opt
+    def WithOCR(inline: bool = False, with_bounding_boxes: bool = False, detect_tables: bool = False) -> Option:
+        """Enable Optical Character Recognition (OCR) for text extraction.
+        Keyword arguments:
+        inline -- If True, use inline OCR. Defaults to False.
+        with_bounding_boxes -- If True, return text with bounding boxes. Defaults to False.
+        detect_tables -- If True, detect tables in the file. Defaults to False.
+        """
 
-        return apply
-
-    @staticmethod
-    def AsPlainText() -> Option:
-        """Output text as plain text format."""
-        def apply(opt: dict) -> dict:
-            opt["as_plain_text"] = True
-            return opt
-
-        return apply
-
-    @staticmethod
-    def AsHTML() -> Option:
-        """Output text as HTML format instead of plain text."""
-        def apply(opt: dict) -> dict:
-            opt["as_plain_text"] = False
-            return opt
-
-        return apply
-
-    @staticmethod
-    def WithOCR(inline: bool = False) -> Option:
-        """Enable Optical Character Recognition (OCR) for text extraction."""
         def apply(opt: dict) -> dict:
             opt["with_ocr"] = True
             # Combo option is much cleaner here
             if inline:
                 opt["inline_ocr"] = True
+            if with_bounding_boxes:
+                opt["with_bounding_boxes"] = True
+            if detect_tables:
+                opt["detect_tables"] = True
             return opt
 
         return apply
@@ -112,11 +95,9 @@ def example_usage():
     with open("example.pdf", "rb") as file:
         text = get_text(
             file,
-            Options.WithBoundingBoxes(),
             Options.WithTimeout(30),   # Options can take parameters!
-            Options.WithOCR(inline=True),  # Cleaner to set combo options :)
+            Options.WithOCR(inline=True, with_bounding_boxes=False, detect_tables=True),  # Cleaner to set combo options :)
             Options.WithRotation(180),
             Options.AsHTML(),
-            Options.WithBoundingBoxes(),
         )
         print(text)

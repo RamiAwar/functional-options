@@ -46,22 +46,19 @@ def get_text(
     if rotate_angle != 0:
         headers["rotate_angle"] = rotate_angle
 
-    if detect_tables:
-        headers["detect_tables"] = True
-
-    if with_bounding_boxes:
-        headers["with_bounding_boxes"] = True
-
     if as_plain_text:
         headers["as_plain_text"] = True
 
-    if not with_ocr:
-        headers["SkipOCR"] = "true"
+    if with_ocr:
+        headers["with_ocr"] = "true"
 
-    # Sub-options: Inline OCR
-    # Ignore inline_ocr if with_ocr is False
-    if with_ocr and inline_ocr:
-        headers["inline_ocr"] = "true"
+        # Sub-options : ignore if with_ocr is False
+        if with_bounding_boxes:
+            headers["with_bounding_boxes"] = "true"
+        if inline_ocr:
+            headers["inline_ocr"] = "true"
+        if detect_tables:
+            headers["detect_tables"] = "true"
 
     if as_plain_text:
         headers["Accept"] = "text/plain"
