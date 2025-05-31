@@ -1,5 +1,6 @@
-from typing import Optional
 from io import BufferedReader
+from typing import Optional
+
 import requests
 from pydantic import BaseModel, field_validator
 
@@ -12,12 +13,13 @@ class TextExtractionConfig(BaseModel):
         as_plain_text -- If True, return the text as plain text. If False, return the text as HTML.
         with_ocr -- If True, use OCR to get text from the file. If False, do not use OCR.
         timeout -- The timeout for the OCR process in seconds. If None, no timeout is set.
-        with_bounding_boxes -- If True, return the text with bounding boxes. If False, return the text without bounding boxes.
+        with_bounding_boxes -- If True, return the text with bounding boxes.
         inline_ocr -- If True, use inline OCR to get text from the file. If False, do not use inline OCR.
         ocr_with_text -- If True, use OCR with text. If False, do not use OCR with text.
         rotate_angle -- The angle to rotate the image before processing. Must be 0, 90, 180, or 270.
         detect_tables -- If True, detect tables in the file. If False, do not detect tables.
     """
+
     as_plain_text: bool = True
     with_ocr: bool = False
     timeout: Optional[int] = None
@@ -27,7 +29,7 @@ class TextExtractionConfig(BaseModel):
     rotate_angle: int = 0  # 0, 90, 180, or 270
     detect_tables: bool = False
 
-    @field_validator('timeout')
+    @field_validator("timeout")
     def validate_timeout(cls, value):
         """Validate the timeout value."""
         if value is not None:
@@ -35,7 +37,7 @@ class TextExtractionConfig(BaseModel):
                 raise ValueError("Timeout must be positive")
         return value
 
-    @field_validator('rotate_angle')
+    @field_validator("rotate_angle")
     def validate_rotate_angle(cls, value):
         """Validate the rotate_angle value."""
         if value not in [0, 90, 180, 270]:

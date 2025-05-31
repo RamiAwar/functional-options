@@ -1,12 +1,14 @@
 from __future__ import annotations
-from typing import Self, Any
+
 from io import BufferedReader
+from typing import Self
 
 import requests
 
 
 class Options:
     """Builder class for configuring text extraction options."""
+
     _options: dict
 
     def __init__(self):
@@ -71,7 +73,7 @@ def get_text(file: BufferedReader, options: Options) -> str:
 
 
 def example_usage():
-    with open('example.pdf', 'rb') as f:
+    with open("example.pdf", "rb") as f:
         options = (
             Options()
             .with_ocr(
@@ -84,9 +86,5 @@ def example_usage():
             .as_plain_text()
         )
 
-        # One-liner with explicit annotation for better IDE support
-        text = get_text(
-            f,
-            options  # parentheses help IDE track type
-        )
+        text = get_text(f, options)
         print(text)

@@ -3,7 +3,6 @@ from typing import Callable
 
 import requests
 
-
 Option = Callable[[dict], dict]
 
 
@@ -11,6 +10,7 @@ class Options:
     @staticmethod
     def AsPlainText() -> Option:
         """Output text as plain text format."""
+
         def apply(opt: dict) -> dict:
             opt["as_plain_text"] = True
             return opt
@@ -95,9 +95,12 @@ def example_usage():
     with open("example.pdf", "rb") as file:
         text = get_text(
             file,
-            Options.WithTimeout(30),   # Options can take parameters!
-            Options.WithOCR(inline=True, with_bounding_boxes=False, detect_tables=True),  # Cleaner to set combo options :)
+            Options.WithTimeout(30),  # Options can take parameters!
+            # Cleaner to set combo options :)
+            Options.WithOCR(
+                with_bounding_boxes=True,
+                detect_tables=False,
+            ),
             Options.WithRotation(180),
-            Options.AsHTML(),
         )
         print(text)

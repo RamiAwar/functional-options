@@ -1,5 +1,7 @@
 from io import BufferedReader
+
 import requests
+
 
 def get_text(
     *,
